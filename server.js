@@ -8,7 +8,7 @@ const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3000;
 const POSTGRES_URL = process.env.POSTGRES_URL || 'postgres://localhost:5432/nodechat';
-let db;
+const db = new pg.Client(POSTGRES_URL);
 
 app.set('view engine', 'jade');
 app.use(express.static('public'));
@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 
 app.get('/chats', (req, res) => {
   db.query('SELECT * FROM chats', (err, result) => {
-    console.log('>>>>>', err, result.rows);
+    console.log('>>>>>', result.rows);
 
     if (err) throw err;
 
@@ -27,10 +27,8 @@ app.get('/chats', (req, res) => {
   });
 });
 
-pg.connect(POSTGRES_URL, (err, client) => {
+db.connect((err) => {
   if (err) throw err
-
-  db = client
 
   server.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`)
