@@ -1,0 +1,25 @@
+{
+  "name": "node-chat",
+  "version": "1.0.0",
+  "description": "nss classroom exercise with socket.io",
+  "main": "server.js",
+  "scripts": {
+    "serve": "nodemon server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeulvila/node-chat.git"
+  },
+  "author": "Mike Ulvila <mikeulvila@me.com> (https://github.com/mikeulvila)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikeulvila/node-chat/issues"
+  },
+  "homepage": "https://github.com/mikeulvila/node-chat#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.5"
+  }
+}
