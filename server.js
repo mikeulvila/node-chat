@@ -7,12 +7,21 @@ const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3000;
 
+
+app.set('view engine', 'jade');
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
-  res.send('hello');
+  res.render('index');
 });
 
 server.listen(PORT, () => {
   console.log(`Server listening on port: ${PORT}`);
 });
 
+io.on('connection', (socket) => {
+  console.log('connection', socket);
+
+
+});
 
