@@ -17,15 +17,15 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/chats', (req, res) => {
-  db.query('SELECT * FROM chats', (err, result) => {
-    console.log('>>>>>', result.rows);
+// app.get('/chats', (req, res) => {
+//   db.query('SELECT * FROM chats', (err, result) => {
+//     console.log('>>>>>', result.rows);
 
-    if (err) throw err;
+//     if (err) throw err;
 
-    res.send(result.rows);
-  });
-});
+//     res.send(result.rows);
+//   });
+// });
 
 db.connect((err) => {
   if (err) throw err
@@ -36,11 +36,24 @@ db.connect((err) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('connection', socket);
+  console.log('connection', socket.id);
+
+  db.query('SELECT * FROM chats', (err, result) => {
+    if (err) throw err
+
+    socket.emit('receiveChat', result.rows);
+  })
 
   socket.on('sendChat', (msg) => {
-    console.log(msg);
-    socket.broadcast.emit('receiveChat', msg);
+    console.log('on sendChat', msg);
+    // database insert
+    db.query('INSERT INTO chats (name, text) VALUES ($1, $2)',
+      [msg.name, msg.text], (err) => {
+
+        if (err) throw err;
+        //console.log('saved to db');
+        socket.emit('receiveChat', [msg]);
+    });
 
   });
 
